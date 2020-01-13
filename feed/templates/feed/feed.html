@@ -1,0 +1,27 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+<div class="container">
+	<div class="container shadow-lg w-50 p-3 mt-2">
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{feed_form|crispy}}
+			<div class="w-25 mx-auto">
+				<input class="btn btn-primary" type="submit" name="post" value="post">
+			</div>
+		</form>
+	</div>
+	<div class="container">
+		{% for page_items in pages %}
+			<div>
+				{{page_items.post}}
+			</div>
+			<div>
+				<img src="{{page_items.image.url}}">
+			</div>
+		{% endfor %}
+	</div>
+		
+	
+</div>
+{% endblock %}
