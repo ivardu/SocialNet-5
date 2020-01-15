@@ -1,0 +1,63 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+<div class="container">
+	<div class="container">
+		{% for page_items in object_list %}
+		<div class="row container shadow-lg w-50 mx-auto mt-2 p-2 rounded">
+			<div class="col-md-2">
+				<img class="img-thumbnail rounded-circle" src="{{page_items.user.profile.image.url}}" width="100" height="100">	
+			</div>
+			<div class="col-md-8">
+				<!-- Post Item Name -->
+				<div class="row mt-2">
+					<small>{{page_items.user.first_name}} {{page_items.user.last_name}}</small>
+				</div>
+				<!-- Post Content Date -->
+				<div class="row">
+					<small>{{page_items.date}}</small>
+				</div>
+				<!-- Post Content -->
+				<div class="row mt-2 mb-2">
+					{{page_items.post}}
+				</div>
+				<!-- Post Images -->
+				<div class="row">
+					<img src="{{page_items.image.url}}">
+				</div>
+				<!-- Like -->
+				<div class="row">
+					<small><a class="" href="">Likes</a></small>
+					<small><a class="p-2" href="">Comments</a></small>
+				</div>
+				<!-- Comment -->
+				<div class="row">
+					<!-- <small><a href="">Comments</a></small> -->
+				</div>
+			</div>
+		</div>	
+		{% endfor %}
+		<!-- Pagination -->
+		<div class="row mx-auto w-50 mt-2 p-2">
+			{% if page_obj.has_previous %}
+				<a class="btn btn-outline-info" href="?page=1">First</a>
+				<a class="btn btn-outline-info" href="?page={{page_obj.previous_page_number}}">Prev</a>
+			{% endif %}
+			{% for num in page_obj.paginator.page_range %}
+				{% if num == page_obj.number %}
+					<a class="btn btn-info" href="?page={{num}}">{{num}}</a>
+				{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+					<a class="btn btn-outline-info" href="?page={{num}}">{{num}}</a>
+				{% endif %}
+			{% endfor %}
+			{% if page_obj.has_next %}
+				<a class="btn btn-outline-info" href="?page={{page_obj.next_page_number}}">Next</a>
+				<a class="btn btn-outline-info" href="?page={{page_obj.paginator.num_pages}}">Last</a>
+			{% endif %}
+		</div>
+	</div>
+	
+		
+	
+</div>
+{% endblock %}

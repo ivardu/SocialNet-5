@@ -22,6 +22,14 @@
 		</div>
 		<div class="mx-auto order-0">
 			{% if user.is_authenticated %}
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'feed:feed_list' %}">Feed</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'feed:myposts' user.id %}">My Posts</a>
+					</li>
+				</ul>
 		
 			{% else %}
 				<input type="search" name="search">
@@ -32,10 +40,10 @@
 			{% if user.is_authenticated %}
 				<ul class="navbar-nav ml-auto">
 	            	<li class="nav-item">
-	              	 	 <a class="nav-link" href="">Right</a>
+	              	 	 <a class="nav-link text-white" href="{% url 'profile' %}"><img class="img-thumbnail rounded-circle" src="{{user.profile.image.url}}" width="30" height="30">{{user.first_name}}</a>
 	            	</li>
 	            	<li class="nav-item">
-	                	<a class="nav-link" href="">Link</a>
+	                	<a class="nav-link text-white" href="{% url 'logout' %}">Logout</a>
 	            	</li>
 	        	</ul>
 			{% else %}

@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from users import views as user_views
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,7 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('feed.urls')),
     path('login/',LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('logout/',LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('signup/',user_views.SignupFormView.as_view(),name='signup'),
+    path('profile/',user_views.profile, name='profile'),
 ]
 
 if settings.DEBUG:

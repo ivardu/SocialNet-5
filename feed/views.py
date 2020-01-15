@@ -40,3 +40,14 @@ def feed_list(request):
 		feed_form = FeedForm()
 
 	return render(request, 'feed/feed.html', locals())
+
+
+
+class MyPostView(ListView):
+	model = Feed
+	template_name = 'feed/myposts.html'
+	paginate_by = 4
+
+
+	def get_queryset(self):
+		return Feed.objects.filter(user_id=self.kwargs['pk'])
