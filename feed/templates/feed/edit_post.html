@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+<div class="container">
+	<!-- Feed Form -->
+	<div class="container shadow-lg rounded w-50 p-3 mt-2">
+		<form class="mx-auto" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{form|crispy}}
+			<div class="w-25 mx-auto">
+				<input class="btn btn-success" type="submit" name="Update" value="Update">
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

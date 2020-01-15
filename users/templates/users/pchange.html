@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+<div class="container w-25 shadow-lg p-3 mt-2">
+	<form method="post">
+		{% csrf_token %}
+		<div class="h3">
+			<span>Password Change</span>
+		</div>
+		{{form|crispy}}
+		<div class="mx-auto w-25">
+		<input class="btn btn-primary" type="submit" name="login" value="Login">
+		</div>
+	</form>
+</div>
+{% endblock body %}

@@ -120,8 +120,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-LOGIN_URL = 'login/'
-LOGIN_REDIRECT_URL = 'feed:home'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'feed:feed_list'
 
 STATIC_URL = '/static/'
 

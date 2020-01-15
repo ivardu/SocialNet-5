@@ -1,20 +1,28 @@
 from django.shortcuts import render, reverse
+from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
+from django.views.generic.edit import UpdateView
 from users.models import SnetUser
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from feed.models import Feed
 from feed.forms import FeedForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 #Home Page View for the S_Net 5
 class HomePageView(ListView):
-	model = SnetUser
+	model = Feed
 	template_name = 'feed/home.html'
+
+	def get_queryset(self):
+		return Feed.objects.all()[:1]
 
 
 #Feed List View for the S_NET 5
 
+@login_required
 def feed_list(request):
 	feed_obj = Feed.objects.all()
 	paginator = Paginator(feed_obj, 5)
@@ -42,8 +50,8 @@ def feed_list(request):
 	return render(request, 'feed/feed.html', locals())
 
 
-
-class MyPostView(ListView):
+# @login_required
+class MyPostView(LoginRequiredMixin, ListView):
 	model = Feed
 	template_name = 'feed/myposts.html'
 	paginate_by = 4
@@ -51,3 +59,13 @@ class MyPostView(ListView):
 
 	def get_queryset(self):
 		return Feed.objects.filter(user_id=self.kwargs['pk'])
+
+
+class EditPost(LoginRequiredMixin, UpdateView):
+	model = Feed
+	template_name = 'feed/edit_post.html'
+	form_class = FeedForm
+
+	def get_success_url(self):
+		user_id = self.object.user.id
+		return reverse_lazy('feed:myposts', kwargs={'pk':user_id})

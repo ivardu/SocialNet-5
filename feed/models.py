@@ -13,15 +13,19 @@ class Feed(models.Model):
 	date = models.DateTimeField(auto_now_add=True)
 	user = models.ForeignKey(SnetUser, on_delete=models.CASCADE)
 
+	class Meta:
+		ordering = ['-date']
+		
+
 
 	def __str__(self):
 		return self.user.username + " Post"
 
-	def save(self):
-		super().save()
+	def save(self, *args, **kwargs):
+		super().save(*args, **kwargs)
 		img = Image.open(self.image.path)
 
-		if img.height > 400 and img.width > 400:
-			output = (400,400)
-			img.thumbnail(output)
+		if img.height > 200 and img.width > 200:
+			output = (200,200)
+			img.thumbnail(output, Image.ANTIALIAS)
 			img.save(self.image.path)
