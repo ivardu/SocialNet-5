@@ -27,6 +27,7 @@ urlpatterns = [
     path('logout/',LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('signup/',user_views.SignupFormView.as_view(),name='signup'),
     path('profile/',user_views.profile, name='profile'),
+    path('rprofile/<int:pk>',user_views.rprofile, name='rprofile'),
     path('pchange/',
         PasswordChangeView.as_view(template_name='users/pchange.html'), 
         name='pchange'),

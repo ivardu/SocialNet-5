@@ -24,7 +24,11 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="row mt-2">
-							<small>{{page_items.user.first_name}} {{page_items.user.last_name}}</small>
+							{% if user == page_items.user %}
+								<a class="small" href="{% url 'profile' %}">{{page_items.user.first_name}} {{page_items.user.last_name}}</a>
+							{% else %}
+								<a class="small" href="{% url 'rprofile' page_items.user.id %}">{{page_items.user.first_name}} {{page_items.user.last_name}}</a>
+							{% endif %}
 						</div>
 						<!-- Post Content Date -->
 						<div class="row">

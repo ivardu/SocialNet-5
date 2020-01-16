@@ -8,7 +8,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from feed.models import Feed
 from feed.forms import FeedForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 #Home Page View for the S_Net 5
@@ -61,7 +61,7 @@ class MyPostView(LoginRequiredMixin, ListView):
 		return Feed.objects.filter(user_id=self.kwargs['pk'])
 
 
-class EditPost(LoginRequiredMixin, UpdateView):
+class EditPost(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Feed
 	template_name = 'feed/edit_post.html'
 	form_class = FeedForm
@@ -69,3 +69,10 @@ class EditPost(LoginRequiredMixin, UpdateView):
 	def get_success_url(self):
 		user_id = self.object.user.id
 		return reverse_lazy('feed:myposts', kwargs={'pk':user_id})
+
+	# def post(self, request, *args, **kwargs):
+	# 	self.object = self.get_object()
+
+	def test_func(self):
+		print(object.user.id, self.request.user.id)
+		return int(self.kwargs['pk']) == self.request.user.id

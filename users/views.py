@@ -3,6 +3,7 @@ from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import FormView
 from users.forms import SignUpForm, ProfileForm, UserUpdateForm
+from users.models import SnetUser
 
 
 # SignUP Class view
@@ -36,3 +37,10 @@ def profile(request):
 		u_form = UserUpdateForm(instance=request.user)
 
 	return render(request, 'users/profile.html', locals())
+
+
+def rprofile(request, pk):
+	ruser = SnetUser.objects.get(pk=pk)
+	form = UserUpdateForm(instance=ruser)
+
+	return render(request, 'users/rprofile.html', locals())
