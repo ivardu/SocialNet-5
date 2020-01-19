@@ -1,4 +1,4 @@
-from users.models import SnetUser, GENDER_CHOICES, Profile
+from users.models import SnetUser, GENDER_CHOICES, Profile, FriendReq
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
@@ -36,3 +36,10 @@ class UserUpdateForm(forms.ModelForm):
 	class Meta:
 		model = SnetUser
 		fields = ['first_name','last_name', 'dob', 'email']
+
+
+class FriendReqForm(forms.ModelForm):
+
+	class Meta:
+		model = FriendReq
+		fields = ['f_req']

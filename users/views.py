@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import FormView
-from users.forms import SignUpForm, ProfileForm, UserUpdateForm
-from users.models import SnetUser
+from users.forms import SignUpForm, ProfileForm, UserUpdateForm, FriendReqForm
+from users.models import SnetUser, FriendReq, FriendReqAcp
 
 
 # SignUP Class view
@@ -35,12 +35,34 @@ def profile(request):
 		# As I don't want to display the existing user details
 		p_form = ProfileForm()
 		u_form = UserUpdateForm(instance=request.user)
+		f_req = FriendReqAcp.objects.filter(friends='no').filter(auser=request.user)
 
 	return render(request, 'users/profile.html', locals())
 
 
 def rprofile(request, pk):
-	ruser = SnetUser.objects.get(pk=pk)
-	form = UserUpdateForm(instance=ruser)
+	auser = SnetUser.objects.get(pk=pk)
+	form = UserUpdateForm(instance=auser)
 
-	return render(request, 'users/rprofile.html', locals())
+	try:
+		fracp = FriendReqAcp.objects.get(auser_id=auser.id)
+		freq = fracp.friendreq_set.filter(ruser=request.user).filter(f_req='yes')[0]
+	except:
+		return render(request, 'users/rprofile.html', locals())
+
+	return render(request,'users/rprofile.html', locals())
+
+
+def friend_request(request, pk):
+
+	if request.method == 'POST':
+		fr_form = FriendReqForm(request.POST)
+		auser = SnetUser.objects.get(pk=pk)
+		if fr_form.is_valid():
+			fr_model_obj = fr_form.save(commit=False)
+			fr_model_obj.ruser = request.user
+			fr_model_obj.save()
+			fracp = FriendReqAcp.objects.create(auser=auser)
+
+			return HttpResponseRedirect(reverse('rprofile', args=(pk,)))
+

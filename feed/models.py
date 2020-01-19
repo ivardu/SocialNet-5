@@ -29,3 +29,25 @@ class Feed(models.Model):
 			output = (200,200)
 			img.thumbnail(output, Image.ANTIALIAS)
 			img.save(self.image.path)
+
+
+class Likes(models.Model):
+	likes = models.IntegerField()
+	post = models.ForeignKey(Feed, on_delete=models.CASCADE)
+	user = models.ForeignKey(SnetUser, on_delete=models.CASCADE)
+
+
+	def __str__(self):
+		return self.user.username
+
+class Comments(models.Model):
+	comment = models.CharField(max_length=255)
+	date = models.DateTimeField(auto_now_add=True)
+	post = models.ForeignKey(Feed, on_delete=models.CASCADE)
+	user = models.ForeignKey(SnetUser, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.comment
+
+	class Meta:
+		ordering = ['-date']

@@ -1,28 +1,37 @@
 {% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
 {% block body %}
-<div class="container shadow-lg p-3 mt-2 w-25">
-	<div class="row container">
-		<div class="col-md-5 pl-0">
-			<img class="img-thumbnail border rounded-circle" src="{{user.profile.image.url}}" >
+<div class="row w-50 mx-auto">
+	<div class="col-md-6 shadow-lg p-3 mt-2 w-25 mx-auto">
+		<div class="row container">
+			<div class="col-md-5 pl-0">
+				<img class="img-thumbnail border rounded-circle" src="{{user.profile.image.url}}" >
+			</div>
+			<div class="col-md-7 mb-auto mt-auto">
+				<div class="row">
+					<h6>{{user.first_name}} {{user.last_name}} | Profile</h6>
+				</div>
+				<div class="row">
+					<small>{{user.email}}</small>
+				</div>
+				
+			</div>
 		</div>
-		<div class="col-md-7 mb-auto mt-auto">
-			<div class="row">
-				<h6>{{user.first_name}} {{user.last_name}} | Profile</h6>
+		<form method="post" enctype="multipart/form-data"> 
+			{% csrf_token %}
+			{{p_form|crispy}}
+			{{u_form|crispy}}
+			<div class="w-25 mx-auto">
+				<input class="btn btn-success" type="submit" name="update" value="Update">
 			</div>
-			<div class="row">
-				<small>{{user.email}}</small>
-			</div>
-			
+		</form>
+	</div>
+	<div class="col-md-4 mx-auto w-25 ">
+		<div class="row shadow-lg bg-light p-3 mt-2">
+		{% for obj in f_req %}
+		<span>{{obj.ruser.username}}</span>			
+		{% endfor %}
 		</div>
 	</div>
-	<form method="post" enctype="multipart/form-data"> 
-		{% csrf_token %}
-		{{p_form|crispy}}
-		{{u_form|crispy}}
-		<div class="w-25 mx-auto">
-			<input class="btn btn-success" type="submit" name="update" value="Update">
-		</div>
-	</form>
 </div>
 {% endblock body %}

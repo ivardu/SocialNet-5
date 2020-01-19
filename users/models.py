@@ -39,3 +39,23 @@ class Profile(models.Model):
 			output=(150,150)
 			img = img.resize(output, Image.ANTIALIAS)
 			img.save(self.image.path)
+
+
+
+# Friend Request Acceptor data
+class FriendReqAcp(models.Model):
+	friends = models.CharField(max_length=3, default='no')
+	auser = models.ForeignKey(SnetUser, on_delete=models.CASCADE)
+	
+
+	def __str__(self):
+		return self.auser.username
+
+# Friend Request placer data
+class FriendReq(models.Model):
+	f_req = models.CharField(max_length=3, default='no')
+	ruser = models.ForeignKey(SnetUser, on_delete=models.CASCADE)
+	fracp = models.ManyToManyField(FriendReqAcp)
+
+	def __str__(self):
+		return self.ruser.username

@@ -1,4 +1,5 @@
 {% extends 'users/base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block body %}
 <div class="container">
@@ -37,7 +38,7 @@
 					</div>
 					<div class="col-xs-2 ml-auto">
 						{% if user == page_items.user %}
-							<a href="{% url 'feed:edit' page_items.id %}">Edit</a>
+							<a href="{% url 'feed:edit' page_items.id %}"><img src="{% static 'components/edit.jpg' %}" height="15" width="15"></a>
 						{% endif %}
 					</div>
 				</div>
@@ -47,19 +48,50 @@
 				</div>
 				<!-- Post Images -->
 				<div class="row">
-					<img src="{{page_items.image.url}}">
+					<img src="{{page_items.image.url}}" width="400" height="400">
 				</div>
 				<!-- Like -->
 				<div class="row">
-					<small><a class="" href="">Likes</a></small>
-					<small><a class="p-2" href="">Comments</a></small>
+					<form method="post">
+						{% csrf_token %}
+							<input type="hidden" name="likes" value=1>
+							<input type="hidden" name='post_id' value={{page_items.id}}>
+								<input class="btn btn-link" type="submit" name="Likes" value="Likes">
+							<small>{{page_items.likes_set.count}}</small>
+					</form>
+					
 				</div>
 				<!-- Comment -->
 				<div class="row">
+					<form method="post">
+						{% csrf_token %}
+						<div class="input-group">
+							{{comment_form}}
+							<div class="input-group-append">
+								<input type="hidden" name="post_id" value="{{page_items.id}}">
+								<input class="btn btn-sm btn-success" type="submit" name="submit" 
+							value="comment">
+							</div>
+						</div>
+					</form>
 					<!-- <small><a href="">Comments</a></small> -->
 				</div>
-
-
+				<!-- Comments List -->
+				<div class="pl-0">
+					{% for comment in page_items.comments_set.all %}
+						{% if comment.user == request.user %}
+							<h6 class="small"><a href="{% url 'profile' %}">{{comment.user.first_name}} {{comment.user.last_name}} </a>
+							{{comment}}</h6>
+							<hr class="p-0 m-0 b-light">
+						{% else %}
+							<h6 class="small"><a href="{% url 'rprofile' comment.user.id %}">
+							{{comment.user.first_name}} {{comment.user.last_name}} </a>
+							{{comment}}</h6>
+							<hr class="p-0 m-0 b-light">
+						{% endif %}
+					{% endfor %}
+				</div>
+		
 			</div>
 		</div>	
 		{% endfor %}

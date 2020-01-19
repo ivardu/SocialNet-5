@@ -16,7 +16,7 @@
 		<div class="nav navbar-left">
 			<ul class="navbar-nav ml-5">
 				<li class="nav-item">
-					<a class="navbar-brand" href="#">Social Net 5</a>
+					<a class="navbar-brand" href="{% url 'feed:feed_list'%}">Social Net 5</a>
 				</li>
 			</ul>
 		</div>
@@ -27,7 +27,7 @@
 						<a class="nav-link" href="{% url 'feed:feed_list' %}">Feed</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'feed:myposts' user.id %}">My Posts</a>
+						<a class="nav-link" href="{% url 'feed:myposts'%}">My Posts</a>
 					</li>
 				</ul>
 			{% endif %}
