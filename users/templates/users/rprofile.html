@@ -21,18 +21,25 @@
 		{{form|crispy}}
 		</fieldset>
 	</form>
-	<div>
-	<form method="post" action="{% url 'freq' auser.id %}">	
-			{% csrf_token %}
-			{{fracp.id}}
-
-			<input type="hidden" name="f_req" value="yes">
-			{% if freq.f_req == 'yes' %}
-				<span class="btn btn-success">Friend Request Sent</span>
-			{% else %}
-				<input type="submit" name="submit" value="Friend Request">		
-			{% endif %}
-	</form>	
+	<div class="w-25 mx-auto">
+		<input type="hidden" name="f_req" value="yes">
+		{% if fracp.frnds == 'yes' or frreq.frnds == 'yes' %}
+			<span class="btn btn-success">Friends</span>
+		{% elif fracp.f_req == 'yes' %}
+			<span class="btn btn-success">Friend Request Sent</span>
+		{% elif frreq.f_req == 'yes' %}
+			<form method="post" action="{% url 'freq' auser.id %}">
+				{% csrf_token %}
+				<input type="hidden" name="frnds" value="yes">
+				<input class="btn btn-success" type="submit" name="submit" value="Accept">
+			</form>
+		{% else %}
+			<form method="post" action="{% url 'freq' auser.id %}">	
+				{% csrf_token %}
+				<input type="hidden" name="f_req" value="yes">
+				<input class="btn btn-info" type="submit" name="submit" value="Friend Request">	
+			</form>		
+		{% endif %}
 	</div>
 </div>
 {% endblock body %}

@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import FormView
-from users.forms import SignUpForm, ProfileForm, UserUpdateForm, FriendReqForm
-from users.models import SnetUser, FriendReq, FriendReqAcp
+from users.forms import SignUpForm, ProfileForm, UserUpdateForm, FriendsReqForm, FriendsForm
+from users.models import SnetUser, Friends
 
 
 # SignUP Class view
@@ -37,10 +37,7 @@ def profile(request):
 		u_form = UserUpdateForm(instance=request.user)
 
 		# Friend Request Recieved details
-		fracp = FriendReqAcp.objects.filter(friends='no').filter(auser=request.user)
-		if fracp:
-			fracp = fracp[0]
-			freq = fracp.friendreq_set.all()
+		fracp = Friends.objects.filter(frnds='no').filter(auser=request.user)
 
 	return render(request, 'users/profile.html', locals())
 
@@ -48,13 +45,16 @@ def profile(request):
 def rprofile(request, pk):
 	auser = SnetUser.objects.get(pk=pk)
 	form = UserUpdateForm(instance=auser)
-	fr_form = FriendReqForm()
+	fr_form = FriendsForm()
 
 	try:
-		fracp = FriendReqAcp.objects.filter(friends='no').get(auser_id=auser.id)
-		freq = fracp.friendreq_set.get(ruser=request.user)
+		fracp = Friends.objects.filter(f_req='yes').filter(auser=auser).filter(ruser=request.user)
+		frreq = Friends.objects.filter(f_req='yes').filter(ruser=auser).filter(auser=request.user)
+		if fracp:
+			fracp = fracp[0]
+		if frreq:
+			frreq = frreq[0]
 	except:
-		print('error')
 		return render(request, 'users/rprofile.html', locals())
 
 	return render(request,'users/rprofile.html', locals())
@@ -63,15 +63,24 @@ def rprofile(request, pk):
 def friend_request(request, pk):
 
 	if request.method == 'POST':
-		fr_form = FriendReqForm(request.POST)
+		fr_form = FriendsReqForm(request.POST)
+		frndsform = FriendsForm(request.POST)
 		auser = SnetUser.objects.get(pk=pk)
 		if fr_form.is_valid():
-			fracp = FriendReqAcp.objects.create(auser=auser)
 			fr_model_obj = fr_form.save(commit=False)
 			fr_model_obj.ruser = request.user
+			fr_model_obj.auser = auser
 			fr_model_obj.save()
-			fr_model_obj.fracp.add(fracp)
-			
+						
+			return HttpResponseRedirect(reverse('rprofile', args=(pk,)))
+
+		# print(request.POST.get('frnds'))
+		
+		if request.POST.get('frnds',1) != 1:
+			frnd = Friends.objects.filter(ruser=auser).get(auser=request.user)
+			frnd.frnds = request.POST['frnds']
+			frnd.save()
+
 			return HttpResponseRedirect(reverse('rprofile', args=(pk,)))
 
 
