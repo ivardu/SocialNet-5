@@ -35,7 +35,12 @@ def profile(request):
 		# As I don't want to display the existing user details
 		p_form = ProfileForm()
 		u_form = UserUpdateForm(instance=request.user)
-		f_req = FriendReqAcp.objects.filter(friends='no').filter(auser=request.user)
+
+		# Friend Request Recieved details
+		fracp = FriendReqAcp.objects.filter(friends='no').filter(auser=request.user)
+		if fracp:
+			fracp = fracp[0]
+			freq = fracp.friendreq_set.all()
 
 	return render(request, 'users/profile.html', locals())
 
@@ -43,11 +48,13 @@ def profile(request):
 def rprofile(request, pk):
 	auser = SnetUser.objects.get(pk=pk)
 	form = UserUpdateForm(instance=auser)
+	fr_form = FriendReqForm()
 
 	try:
-		fracp = FriendReqAcp.objects.get(auser_id=auser.id)
-		freq = fracp.friendreq_set.filter(ruser=request.user).filter(f_req='yes')[0]
+		fracp = FriendReqAcp.objects.filter(friends='no').get(auser_id=auser.id)
+		freq = fracp.friendreq_set.get(ruser=request.user)
 	except:
+		print('error')
 		return render(request, 'users/rprofile.html', locals())
 
 	return render(request,'users/rprofile.html', locals())
@@ -59,10 +66,12 @@ def friend_request(request, pk):
 		fr_form = FriendReqForm(request.POST)
 		auser = SnetUser.objects.get(pk=pk)
 		if fr_form.is_valid():
+			fracp = FriendReqAcp.objects.create(auser=auser)
 			fr_model_obj = fr_form.save(commit=False)
 			fr_model_obj.ruser = request.user
 			fr_model_obj.save()
-			fracp = FriendReqAcp.objects.create(auser=auser)
-
+			fr_model_obj.fracp.add(fracp)
+			
 			return HttpResponseRedirect(reverse('rprofile', args=(pk,)))
+
 

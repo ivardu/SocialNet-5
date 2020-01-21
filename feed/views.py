@@ -39,9 +39,12 @@ def feed_list(request):
 	if request.method == 'POST':
 		feed_form = FeedForm(request.POST, request.FILES)
 		likes_form = LikesForm(request.POST)
-		post_item = Feed.objects.get(pk=request.POST['post_id'])
-		diff_user = post_item.likes_set.filter(user=request.user).count() and True or False
 		comment_form = CommentsForm(request.POST)
+
+		if request.POST.get('post_id',1) != 1:
+			post_item = Feed.objects.get(pk=request.POST['post_id'])
+			diff_user = post_item.likes_set.filter(user=request.user).count() and True or False
+		
 		if feed_form.is_valid():
 			f_mod_obj = feed_form.save(commit=False)
 			f_mod_obj.user = request.user
@@ -62,7 +65,6 @@ def feed_list(request):
 			comm_model_obj = comment_form.save(commit=False)
 			comm_model_obj.post = post_item
 			comm_model_obj.user = request.user
-			print(comment_form)
 			comm_model_obj.save()
 
 			return HttpResponseRedirect(reverse('feed:feed_list'))

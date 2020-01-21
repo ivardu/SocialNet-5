@@ -24,9 +24,9 @@
 	<div>
 	<form method="post" action="{% url 'freq' auser.id %}">	
 			{% csrf_token %}
-			{{form|crispy}}
+			{{fracp.id}}
+
 			<input type="hidden" name="f_req" value="yes">
-			<!-- {{freq.f_req}} -->
 			{% if freq.f_req == 'yes' %}
 				<span class="btn btn-success">Friend Request Sent</span>
 			{% else %}

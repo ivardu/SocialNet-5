@@ -28,9 +28,17 @@
 	</div>
 	<div class="col-md-4 mx-auto w-25 ">
 		<div class="row shadow-lg bg-light p-3 mt-2">
-		{% for obj in f_req %}
-		<span>{{obj.ruser.username}}</span>			
-		{% endfor %}
+			<h4 class="">Friend Requests ({{freq.count}})
+				<hr>
+			</h4>
+			{% for obj in freq %}
+			<div class="col-xs-3">
+				<a class="btn btn-success" href="">Accept</a>
+			</div>
+			<div class="col-xs-3">
+				<a href="{% url 'rprofile' obj.ruser_id %}">{{obj.ruser.first_name}} {{obj.ruser.last_name}}</a>	
+			</div>
+			{% endfor %}
 		</div>
 	</div>
 </div>
