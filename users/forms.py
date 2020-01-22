@@ -12,7 +12,7 @@ class SignUpForm(UserCreationForm):
 	password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput())
 	# Need to create the custom third party date picker
 	dob = forms.DateField(widget=forms.TextInput(attrs={
-			'type':'date',
+			'id':'datepicker',
 		}))
 
 	class Meta:

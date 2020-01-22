@@ -28,6 +28,7 @@ urlpatterns = [
     path('signup/',user_views.SignupFormView.as_view(),name='signup'),
     path('profile/',user_views.profile, name='profile'),
     path('rprofile/<int:pk>/',user_views.rprofile, name='rprofile'),
+    path('frnd_req/',user_views.friends_list, name='frnd_list'),
     path('freq/<int:pk>',user_views.friend_request ,name='freq'),
     path('pchange/',
         PasswordChangeView.as_view(template_name='users/pchange.html'), 
@@ -35,6 +36,7 @@ urlpatterns = [
     path('pcdone/',
         PasswordChangeDoneView.as_view(template_name='users/pcdone.html'), 
         name='password_change_done'),
+
 ]
 
 if settings.DEBUG:

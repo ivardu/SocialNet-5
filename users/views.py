@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import FormView
 from users.forms import SignUpForm, ProfileForm, UserUpdateForm, FriendsReqForm, FriendsForm
 from users.models import SnetUser, Friends
+from django.db.models import Q
 
 
 # SignUP Class view
@@ -82,5 +83,15 @@ def friend_request(request, pk):
 			frnd.save()
 
 			return HttpResponseRedirect(reverse('rprofile', args=(pk,)))
+
+
+
+def friends_list(request):
+
+	frnd_req = Friends.objects.filter(frnds='no').filter(auser=request.user)
+	frnd_list = Friends.objects.filter(frnds='yes').filter(Q(ruser=request.user) | Q(auser=request.user))
+	print(frnd_list)
+
+	return render(request, 'users/frnd_req.html', locals())
 
 

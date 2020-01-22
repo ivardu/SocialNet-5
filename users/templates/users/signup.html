@@ -1,5 +1,8 @@
 {% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
+{% block title %}
+	Snet - SignUp
+{% endblock title %}
 {% block body %}
 <div class="container shadow-lg rounded border p-3 mt-2 w-25">
 	<form method="post">
@@ -8,7 +11,7 @@
 		<div class="w-25 mx-auto">
 			<input class="btn btn-success" type="submit" name="SignUp" value="SignUp">
 		</div>
-	</form>
-	
+	</form>	
 </div>
+
 {% endblock body %}

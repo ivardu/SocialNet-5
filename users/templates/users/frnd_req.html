@@ -1,0 +1,54 @@
+{% extends 'users/base.html' %}
+{% block body %}
+<div class="container shadow-lg bg-light p-3 mt-2 mx-auto w-50">
+		<div class="">
+			<h6 class="p-1">Friends</h6>
+			<hr>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="row mx-auto">
+					<h4 class="ml-2">Friends ({{frnd_list.count}})
+					</h4>
+				</div>
+				<div class="row mx-auto">
+					{% for obj in frnd_list %}
+					<!-- {{obj.ruser}} {{obj.id}} {{obj.auser}} -->
+					<div class="col-md-7 pl-1">
+						{% if obj.auser == user %}
+						<button class="btn btn-sm btn-info w-100 m-1">
+							<a class="text-white" href="{% url 'rprofile' obj.ruser_id %}"><img class="img-thumbnail rounded-circle" src="{{obj.ruser.profile.image.url}}" width="30" height="30">{{obj.ruser.first_name}} {{obj.ruser.last_name}} </a>
+						</button>
+						{% elif obj.ruser == user %}
+						<button class="btn btn-sm btn-info w-100 m-1">
+							<a class="text-white" href="{% url 'rprofile' obj.ruser_id %}"><img class="img-thumbnail rounded-circle" src="{{obj.auser.profile.image.url}}" width="30" height="30">{{obj.auser.first_name}} {{obj.auser.last_name}} 
+							</a>	
+						</button>
+						{% endif %}
+					</div>
+					{% endfor %}
+				</div>	
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<h4 class="">Friend Requests ({{frnd_req.count}})
+					</h4>
+					<div class="row">
+						{% for obj in frnd_req %}
+						<div class="col-md-4 mb-1 mr-0">
+							<form method="post" action="{% url 'freq' obj.ruser.id %}">
+								{% csrf_token %}
+								<input type="hidden" name="frnds" value="yes">
+								<input class="btn btn-sm btn-success" type="submit" name="submit" value="Accept">
+							</form>
+						</div>
+						<div class="col-md-8 pl-1">
+							<a href="{% url 'rprofile' obj.ruser_id %}">{{obj.ruser.first_name}} {{obj.ruser.last_name}}</a>	
+						</div>
+						{% endfor %}
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock body %}
