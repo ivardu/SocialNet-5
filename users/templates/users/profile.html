@@ -1,5 +1,6 @@
 {% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
+
 {% block body %}
 <div class="row w-50 mx-auto">
 	<div class="col-md-6 shadow-lg p-3 mt-2 w-25 mx-auto">
@@ -29,20 +30,24 @@
 	<div class="col-md-4 mx-auto w-25 ">
 		<div class="row shadow-lg bg-light p-3 mt-2">
 			<h4 class="">Friend Requests ({{fracp.count}})
-				<hr>
+				<hr class="m-0">
 			</h4>
-			{% for obj in fracp %}
-			<div class="col-xs-3">
-				<form method="post" action="{% url 'freq' obj.ruser.id %}">
-					{% csrf_token %}
-					<input type="hidden" name="frnds" value="yes">
-					<input class="btn btn-success" type="submit" name="submit" value="Accept">
-				</form>
+			
+			<div class="row">
+				{% for obj in fracp %}
+				<div class="col-md-4 mb-1 mr-0">
+					<form method="post" action="{% url 'freq' obj.ruser.id %}">
+						{% csrf_token %}
+						<input type="hidden" name="frnds" value="yes">
+						<input class="btn btn-sm btn-success" type="submit" name="submit" value="Accept">
+					</form>
+				</div>
+				<div class="col-md-6 pl-0">
+					<a href="{% url 'rprofile' obj.ruser_id %}">{{obj.ruser.first_name}} {{obj.ruser.last_name}}</a>	
+				</div>
+				{% endfor %}
 			</div>
-			<div class="col-xs-3">
-				<a href="{% url 'rprofile' obj.ruser_id %}">{{obj.ruser.first_name}} {{obj.ruser.last_name}}</a>	
-			</div>
-			{% endfor %}
+			
 		</div>
 	</div>
 </div>

@@ -20,6 +20,10 @@ class SnetUser(AbstractUser):
 
 		return self.first_name+" "+self.last_name
 
+	def friends_list(self):
+		return self.friend_acp.filter(frnds='no').count()
+
+
 
 def profile_pic_dir(instance, filename):
 	return f'{instance.user.username}/profile_pics/{filename}'
@@ -52,3 +56,5 @@ class Friends(models.Model):
 
 	def __str__(self):
 		return self.ruser.username + " " + self.auser.username 
+
+
