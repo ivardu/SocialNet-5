@@ -1,4 +1,7 @@
 {% extends 'users/base.html' %}
+{% block title %}
+	Snet - {{user.first_name}} Friends
+{% endblock title %}
 {% block body %}
 <div class="container shadow-lg bg-light p-3 mt-2 mx-auto w-50">
 		<div class="">
@@ -21,7 +24,7 @@
 						</button>
 						{% elif obj.ruser == user %}
 						<button class="btn btn-sm btn-info w-100 m-1">
-							<a class="text-white" href="{% url 'rprofile' obj.ruser_id %}"><img class="img-thumbnail rounded-circle" src="{{obj.auser.profile.image.url}}" width="30" height="30">{{obj.auser.first_name}} {{obj.auser.last_name}} 
+							<a class="text-white" href="{% url 'rprofile' obj.auser_id %}"><img class="img-thumbnail rounded-circle" src="{{obj.auser.profile.image.url}}" width="30" height="30">{{obj.auser.first_name}} {{obj.auser.last_name}} 
 							</a>	
 						</button>
 						{% endif %}

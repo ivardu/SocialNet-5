@@ -1,6 +1,9 @@
 {% extends 'users/base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% block title %}
+	Snet - {{user.first_name}} Posts
+{% endblock title %}
 {% block body %}
 <div class="container">
 	<div class="container">

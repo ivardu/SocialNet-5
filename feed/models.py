@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import SnetUser
 from PIL import Image
+from datetime import datetime, timedelta, timezone
 
 # Create your models here.
 
@@ -29,6 +30,28 @@ class Feed(models.Model):
 			output = (200,200)
 			img.thumbnail(output, Image.ANTIALIAS)
 			img.save(self.image.path)
+
+	def post_time(self):
+		current_time = datetime.now(timezone.utc)
+		post_time = self.date
+		display_time = current_time-post_time
+		print(display_time.microseconds, display_time.days)
+
+		if display_time.days >=1:
+			if display_time.days == 1:
+				return f"{display_time.days} day ago"
+			else:
+				return f"{display_time.days} days ago"
+
+		elif (display_time.seconds)/60 <=60:
+			return f"{(display_time.seconds)/60} minutes ago"
+
+		elif (display_time.seconds)/60 >= 60:
+			return f"{round(((display_time.seconds)/60)/60)} hours ago"
+		else:
+			return f"{display_time.seconds} seconds ago"
+
+		return f"{display_time.days} days ago"
 
 
 class Likes(models.Model):

@@ -32,6 +32,7 @@ class ProfileForm(forms.ModelForm):
 
 
 class UserUpdateForm(forms.ModelForm):
+	dob = forms.DateField(widget=forms.TextInput(attrs={'id':'datepicker', }))
 
 	class Meta:
 		model = SnetUser

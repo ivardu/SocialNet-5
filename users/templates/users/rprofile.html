@@ -1,5 +1,8 @@
 {% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
+{% block title %}
+	Snet - {{auser.first_name}} Profile
+{% endblock title %}
 {% block body %}
 <div class="container shadow-lg p-3 mt-2 w-25">
 	<div class="row container">

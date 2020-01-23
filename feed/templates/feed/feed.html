@@ -1,6 +1,9 @@
 {% extends 'users/base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% block title %}
+	Snet - Feed
+{% endblock title %}
 {% block body %}
 <div class="container">
 	<!-- Feed Form -->
@@ -33,7 +36,7 @@
 						</div>
 						<!-- Post Content Date -->
 						<div class="row">
-							<small>{{page_items.date}}</small>
+							<small>{{page_items.post_time}}</small>
 						</div>
 					</div>
 					<div class="col-xs-2 ml-auto">
