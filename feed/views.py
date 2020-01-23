@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView
+from django.db.models import Q
 from users.models import SnetUser
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from feed.models import Feed
@@ -24,7 +25,12 @@ class HomePageView(ListView):
 
 @login_required
 def feed_list(request):
-	feed_obj = Feed.objects.all()
+	feed_obj = Feed.objects.filter(
+		Q(user__friend_req__frnds='yes', user__friend_req__auser=request.user)|
+		Q(user__friend_acp__ruser=request.user)|
+		Q(user=request.user)
+	)
+	print(feed_obj)
 	paginator = Paginator(feed_obj, 5)
 	page = request.GET.get('page',1)
 	try:

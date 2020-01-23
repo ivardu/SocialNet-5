@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from PIL import Image
 
@@ -22,6 +23,15 @@ class SnetUser(AbstractUser):
 
 	def friends_list(self):
 		return self.friend_acp.filter(frnds='no').count()
+
+	# def friend(self):
+	# 	r_user = self.request.user
+	# 	a_user = self.user 
+
+	# 	st = Friends.objects.filter(frnds='yes').filter(Q(a_user=a_user)|Q(a_user=r_user)).filter(Q(r_user=a_user)|Q(r_user=r_user))
+	# 	print(st)
+
+	# 	return True
 
 
 
@@ -56,5 +66,7 @@ class Friends(models.Model):
 
 	def __str__(self):
 		return self.ruser.username + " " + self.auser.username 
+
+
 
 
