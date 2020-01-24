@@ -5,6 +5,8 @@ from django.views.generic.edit import FormView
 from users.forms import SignUpForm, ProfileForm, UserUpdateForm, FriendsReqForm, FriendsForm
 from users.models import SnetUser, Friends
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import PasswordChangeView
 
 
 # SignUP Class view
@@ -43,6 +45,7 @@ def profile(request):
 	return render(request, 'users/profile.html', locals())
 
 
+# Ready only profile mode for the other users
 def rprofile(request, pk):
 	auser = SnetUser.objects.get(pk=pk)
 	form = UserUpdateForm(instance=auser)
@@ -61,6 +64,7 @@ def rprofile(request, pk):
 	return render(request,'users/rprofile.html', locals())
 
 
+# Friend Request handling
 def friend_request(request, pk):
 
 	if request.method == 'POST':
@@ -86,6 +90,7 @@ def friend_request(request, pk):
 
 
 
+# Display the list of the friends 
 def friends_list(request):
 
 	frnd_req = Friends.objects.filter(frnds='no').filter(auser=request.user)
@@ -93,5 +98,12 @@ def friends_list(request):
 	print(frnd_list)
 
 	return render(request, 'users/frnd_req.html', locals())
+
+
+# To redirect to the logout page when the user changes the password
+class PasswordChange(LoginRequiredMixin, PasswordChangeView):
+
+	def get_success_url(self, **kwargs):
+		return reverse_lazy('logout')
 
 

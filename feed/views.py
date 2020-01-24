@@ -26,10 +26,10 @@ class HomePageView(ListView):
 @login_required
 def feed_list(request):
 	feed_obj = Feed.objects.filter(
-		Q(user__friend_req__frnds='yes', user__friend_req__auser=request.user)|
-		Q(user__friend_acp__ruser=request.user)|
+		(Q(user__friend_req__frnds='yes', user__friend_req__auser=request.user)|
+		Q(user__friend_acp__ruser=request.user))|
 		Q(user=request.user)
-	)
+	).distinct()
 	print(feed_obj)
 	paginator = Paginator(feed_obj, 5)
 	page = request.GET.get('page',1)

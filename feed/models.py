@@ -20,7 +20,7 @@ class Feed(models.Model):
 
 
 	def __str__(self):
-		return self.user.username + " Post"
+		return self.user.username + " Post" + self.post
 
 	def save(self, *args, **kwargs):
 		super().save(*args, **kwargs)

@@ -31,11 +31,11 @@ urlpatterns = [
     path('frnd_req/',user_views.friends_list, name='frnd_list'),
     path('freq/<int:pk>',user_views.friend_request ,name='freq'),
     path('pchange/',
-        PasswordChangeView.as_view(template_name='users/pchange.html'), 
+        user_views.PasswordChange.as_view(template_name='users/pchange.html'), 
         name='pchange'),
-    path('pcdone/',
-        PasswordChangeDoneView.as_view(template_name='users/pcdone.html'), 
-        name='password_change_done'),
+    # path('pcdone/',
+    #     PasswordChangeDoneView.as_view(template_name='users/pcdone.html'), 
+    #     name='password_change_done'),
 
 ]
 
